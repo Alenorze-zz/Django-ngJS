@@ -24,8 +24,16 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular.min.js"></script>
     <script>
             var app = angular.module('restang', []);
-            app.controller('restangControler', function($scope) {
-                $scope.restangList = [{restangText: 'Finish', done: false}];
+            app.controller('restangControler', function($scope, $http) {
+                $http.get('/todo/api/').then(function(response) {
+                    $scope.restangList = [];
+                    for (var i = 0; i < response.data.lenght; i++) {
+                        var restang = {};
+                        restang.restangText = response.data[i].text
+                        restang.done = response.data[i].done
+                        $scope.restangList.push(todo);
+                    }
+                });
                 $scope.restangAdd = function() {
                     $scope.restangList.push({restangText: $scope.todoInput});
                     $scope.restangInput = '';
